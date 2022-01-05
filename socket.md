@@ -95,6 +95,7 @@
 - 给socket绑定一个 地址结构
 
 	int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+	
 	参数：
 		sockfd: socket 函数返回值
 		
@@ -117,7 +118,8 @@
 
 - 设置同时与服务器建立连接的上限数。（同时进行3次握手的客户端数量）
 
-	int listen(int sockfd, int backlog);		
+	int listen(int sockfd, int backlog);
+	
 	参数：
 		sockfd: socket 函数返回值
 		backlog：上限数值。最大值 128
@@ -132,6 +134,7 @@
 
 
 	int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);	
+	
 	参数：
 		sockfd: socket 函数返回值
 		
@@ -143,17 +146,18 @@
 	
 			 入：addr的大小。 出：客户端addr实际大小。
 	
-		返回值：
+	返回值：
 	
-			成功：能与客户端进行数据通信的 socket 对应的文件描述。
+		成功：能与客户端进行数据通信的 socket 对应的文件描述。
 	
-			失败： -1 ， errno
+		失败： -1 ， errno
 
 #### **connect**
 
 - 使用现有的 socket 与服务器建立连接
 
     int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);	  
+    
     参数：
     	sockfd： socket 函数返回值
     
