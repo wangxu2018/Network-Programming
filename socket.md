@@ -123,15 +123,17 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
 
 - 设置同时与服务器建立连接的上限数。（同时进行3次握手的客户端数量）
 
-	int listen(int sockfd, int backlog);
-	
-	参数：
-		sockfd: socket 函数返回值
-		backlog：上限数值。最大值 128
-	
-	返回值：
-		成功：0
-		失败：-1 errno
+```
+int listen(int sockfd, int backlog);
+
+参数：
+	sockfd: socket 函数返回值
+	backlog：上限数值。最大值 128
+
+返回值：
+	成功：0
+	失败：-1 errno
+```
 
 #### **accept**
 
