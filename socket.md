@@ -81,38 +81,43 @@
 
 #### **socket**
 
-	int socket(int domain, int type, int protocol);		创建一个 套接字
-	参数：
-		domain：AF_INET、AF_INET6、AF_UNIX
-		type：SOCK_STREAM、SOCK_DGRAM
-		protocol: 0 
-	返回值：
-		成功：新套接字所对应文件描述符
-		失败: -1 errno
+```
+int socket(int domain, int type, int protocol);		创建一个 套接字
+参数：
+	domain：AF_INET、AF_INET6、AF_UNIX
+	type：SOCK_STREAM、SOCK_DGRAM
+	protocol: 0 
+返回值：
+	成功：新套接字所对应文件描述符
+	失败: -1 errno
+```
 
 #### **bind**
 
 - 给socket绑定一个 地址结构
 
-	int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+```
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+
+参数：
+
+	sockfd: socket 函数返回值
 	
-	参数：
-		sockfd: socket 函数返回值
-		
-	        struct sockaddr_in addr;
-	        addr.sin_family = AF_INET;
-	        addr.sin_port = htons(8888);
-	        addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        struct sockaddr_in addr;
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(8888);
+        addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	addr: 传入参数(struct sockaddr *)&addr
+
+	addrlen: sizeof(addr) 地址结构的大小。
 	
-		addr: 传入参数(struct sockaddr *)&addr
+返回值:
+	成功：0
+	失败：-1 errno
 	
-		addrlen: sizeof(addr) 地址结构的大小。
-	
-	返回值:
-		成功：0
-		失败：-1 errno
-		
-	如果不使用bind绑定客户端地址结构, 客户端会采用"隐式绑定".
+如果不使用bind绑定客户端地址结构, 客户端会采用"隐式绑定".
+```
 
 #### **listen**
 
@@ -132,50 +137,53 @@
 
 - 阻塞等待客户端建立连接，成功的话，返回一个与客户端成功连接的socket文件描述符
 
+```
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);	
 
-	int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);	
+参数：
+	sockfd: socket 函数返回值
 	
-	参数：
-		sockfd: socket 函数返回值
-		
-		addr：传出参数。成功与服务器建立连接的那个客户端的地址结构（IP+port）
-		
-			socklen_t clit_addr_len = sizeof(addr);
+	addr：传出参数。成功与服务器建立连接的那个客户端的地址结构（IP+port）
 	
-		addrlen：传入传出。 &clit_addr_len
-	
-			 入：addr的大小。 出：客户端addr实际大小。
-	
-	返回值：
-	
-		成功：能与客户端进行数据通信的 socket 对应的文件描述。
-	
-		失败： -1 ， errno
+		socklen_t clit_addr_len = sizeof(addr);
+
+	addrlen：传入传出。 &clit_addr_len
+
+		 入：addr的大小。 出：客户端addr实际大小。
+
+返回值：
+
+	成功：能与客户端进行数据通信的 socket 对应的文件描述。
+
+	失败： -1 ， errno
+```
 
 #### **connect**
 
 - 使用现有的 socket 与服务器建立连接
 
-    int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);	  
-    
-    参数：
-    	sockfd： socket 函数返回值
-    
-    		struct sockaddr_in srv_addr;		// 服务器地址结构
-    
-    		srv_addr.sin_family = AF_INET;
-    
-    		srv_addr.sin_port = 9527 	跟服务器bind时设定的 port 完全一致。
-    
-    		inet_pton(AF_INET, "服务器的IP地址"，&srv_adrr.sin_addr.s_addr);
-    
-    	addr：传入参数。服务器的地址结构
-    	
-    	addrlen：服务器的地址结构的大小
-    
-    返回值：
-    	成功：0
-    	失败：-1 errno
+```
+int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);	  
+
+参数：
+	sockfd： socket 函数返回值
+
+		struct sockaddr_in srv_addr;		// 服务器地址结构
+
+		srv_addr.sin_family = AF_INET;
+
+		srv_addr.sin_port = 9527 	跟服务器bind时设定的 port 完全一致。
+
+		inet_pton(AF_INET, "服务器的IP地址"，&srv_adrr.sin_addr.s_addr);
+
+	addr：传入参数。服务器的地址结构
+	
+	addrlen：服务器的地址结构的大小
+
+返回值：
+	成功：0
+	失败：-1 errno
+```
 
 
 ​	
