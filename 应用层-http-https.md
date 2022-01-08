@@ -61,6 +61,10 @@
 
 <img src="C:/Users/45043/AppData/Roaming/Typora/typora-user-images/image-20220108215541180.png" alt="image-20220108215541180" style="zoom:50%;" />
 
+
+
+<img src="images/SSL流程图.png" alt="image-20220108221136419" style="zoom: 67%;" />
+
 ## **对称加密算法**
 
 ### **简述**
@@ -109,3 +113,92 @@
 - DSA
 - ECC
 - DH
+
+## **http 1.x http2.0 https的区别**
+
+### **http1.x 与 https的区别**
+
+- http1.x基础上增加了SSL、TSL这样的安全协议，因此出现了https
+  - 具体的话在应用层与传输层之间增加了一个SSL子层，归属于应用层
+  - 在TCP建连之后，需要对应用层数据进行加密传输
+
+### **http 1.x**
+
+**http1.0**
+
+- 1996年提出
+- 请求头 + 请求体（响应头+响应体）、GET\POST
+- **效率低** 每个请求作为一个单独的连接，client与server完成一次请求均需要再次重新建立连接后再断开；没有做到连接的复用
+
+
+
+**http 1.1**
+
+- 1997年提出
+- 请求头中增加了 **connection：keep-alive** 字段，实现了连接的复用，避免了频繁的建连，提高了效率
+  - connection：keep-alive 可设置默认的建连时间
+
+
+
+**http 1.x存在的问题**
+
+- 明文传输，基于文本格式传输
+- 传输问题，同一个域名最多建立6个连接，并且顺序传输，server顺序接收，存在阻塞问题
+- header冗长，甚至可能比传输的数据还长
+- server不能主动push问题
+
+### **http 2.0**
+
+http 2.0的出现主要去解决http 1.x中存在的问题
+
+- 效率较大的提升
+
+- 使用二进制分帧策略，传输二进制
+- 实现了单连接多路复用：单连接 + 允许帧乱序传输，server根据收到的帧id进行重组
+- header压缩
+- server端推送（可主动push）
+  - 在未经客户端请求的情况下，server端向client发送报文
+
+### **http3.0**
+
+- 基于TCP 改为 UDP
+
+
+
+## **cookie session**
+
+- 共同解决了http无状态的问题
+- 如：登录一个网站，点击一个页面跳转后，不用再去重新登陆
+
+
+
+### **cookie**
+
+- 保存在client端
+- 由 server端生成，通过相应的报文 set-cookie 字段发送给client
+- 作用
+  - 用于server 去识别client身份
+  - cookie中保存了client的一些操作，如：client购物时加入购物车的操作或者浏览历史
+
+
+
+**具体实现**
+
+- client访问server，发送请求报文给server
+- server 在响应报文中生成一个set-cookie的字段一起发送给client，set-cookie中保存了session id
+- client 端接收并且保存该cookie（cookie中保存了session id，用于server端提取缓存用）
+- 再次请求server的时候，会发送带cookie的报文给server，server根据cookie中的session id去识别client身份以及缓存
+
+### **session**
+
+- 保存在server端，一种保存数据的机制
+- server端根据 cookie中的session id去识别client身份，并且索引到server端session中保存的client的相关数据
+
+
+
+### **cookie 和 session的区别**
+
+- cookie 保存在client，session保存在server端
+- session用户无法查看和修改，cookie用户可以查看修改
+- session和cookie的存储容量不同
+- session依赖于cookie中session id，可以理解 session是基于cookie实现的一种数据存储方式
