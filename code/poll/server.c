@@ -8,7 +8,6 @@
 #include <errno.h>
 #include "wrap.h"
 
-#ifndef __WRAP_H_
 #define MAXLINE 80
 #define SERV_PORT 6666
 #define OPEN_MAX 1024
