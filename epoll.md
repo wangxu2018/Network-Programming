@@ -167,3 +167,14 @@ socket、bind、listen -- epoll_create 创建监听 红黑树 --  返回 epfd --
 					cfd --> senddata()
 	eventadd函数：
 		将一个fd，添加到 监听红黑树。设置监听 读事件，还是监听写事件
+
+
+
+## **代码**
+
+- 管道实现LT、ET两种事件模型
+
+```
+code/epoll/
+```
+

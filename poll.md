@@ -36,3 +36,12 @@ int poll(struct pollfd *fds, nfds_t nfds, int timeout)
 
  - 无法直接定位满足监听事件的文件描述符， 编码难度较大
    	- 看似监听时间和返回事件分离，但又貌似没有分离，依然要遍历数组链表
+
+
+
+## **代码**
+
+```
+code/poll
+```
+
