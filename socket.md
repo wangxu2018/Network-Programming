@@ -191,7 +191,7 @@ int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 
 
-#### TCP通信流程分析
+#### TCP实现的C/S模型
 
 	server:
 		1. socket()	创建socket

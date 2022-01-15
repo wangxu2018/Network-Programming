@@ -1,7 +1,82 @@
 ## **传输层-UDP协议**
 
+### **结构**
+
 - 16位：源端口号	2^16 = 65536 
 - 16位：目的端口号
+
+### **UDP实现的C/S模型**
+
+- **对比TCP C/S模型**
+
+  recv()/send() 替代 read、write替代
+
+  accpet(); Connect(); 被舍弃
+
+  ![image-20220115225617096](./images/udp.png)
+
+- **UDP实现的C/S模型**
+
+```
+server：
+
+	lfd = socket(AF_INET, STREAM, 0);	SOCK_DGRAM --- 报式协议。
+
+	bind();
+
+	listen();  --- 可有可无
+
+	while（1）{
+
+		recvfrom（） --- 涵盖accept传出地址结构。
+			
+		功能函数：小-- 大
+				
+		sendto（）---- connect
+	}
+
+	close();
+client：
+	connfd = socket(AF_INET, SOCK_DGRAM, 0);
+	sendto（‘服务器的地址结构’， 地址结构大小）
+	recvfrom（）
+	写到屏幕
+	close();
+```
+
+### **相关函数**
+
+**recvform**
+
+```
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,struct sockaddr *src_addr, socklen_t *addrlen);
+参数：
+	sockfd：套接字
+	buf：缓冲区地址
+	len：缓冲区大小
+	flags：0
+	src_addr：（struct sockaddr *）&addr 传出。 对端地址结构
+	addrlen：传入传出
+返回值：
+	成功接收数据字节数
+	失败：-1 errn；0：对端关闭
+```
+
+**sendto**
+
+```
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,const struct sockaddr *dest_addr, socklen_t addrlen);
+参数：
+	sockfd：套接字
+	buf：存储数据的缓冲区
+	len：数据长度
+	flags：0
+	src_addr：（struct sockaddr *）&addr 传入。 目标地址结构
+	addrlen：地址结构长度
+返回值：
+	成功写出数据字节数
+	失败 -1，errno
+```
 
 
 
@@ -159,3 +234,32 @@
 
 
 
+## **TCP/UDP各自优缺点**
+
+```
+TCP：面向连接的，可靠数据包传输。对于不稳定的网络层，采取完全弥补的通信方式。 丢包重传。
+
+    优点：
+        稳定		
+        数据流量稳定、速度稳定、顺序
+
+    缺点：
+        传输速度慢。相率低。开销大。
+
+    使用场景：
+        数据的完整型要求较高，不追求效率。
+        大数据传输、文件传输。
+	
+UDP：无连接的，不可靠的数据报传递。对于不稳定的网络层，采取完全不弥补的通信方式。 默认还原网络状况
+
+    优点：
+        传输速度块、相率高、开销小
+
+    缺点：
+        不稳定
+        数据流量、速度、顺序
+
+    使用场景：
+        对时效性要求较高场合、稳定性其次
+        游戏、视频会议、视频电话
+```
