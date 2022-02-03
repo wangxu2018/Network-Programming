@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
     Bind(listenfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
     Listen(listenfd, 128);
     
-
-    fd_set rset, allset;                            /* rset 读事件文件描述符集合 allset用来暂存 */
+    // rset 读事件文件描述符集合 allset用来暂存
+    fd_set rset, allset;                            
 
     maxfd = listenfd;
 
