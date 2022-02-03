@@ -66,8 +66,9 @@ int main(void)
                         inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
                         ntohs(cliaddr.sin_port));
 
-                for (i = 0; i < n; i++)
+                for (i = 0; i < n; i++) {
                     buf[i] = toupper(buf[i]);
+                }
 
                 Write(STDOUT_FILENO, buf, n);
                 Write(connfd, buf, n);

@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	maxi = 0; 										/* client[]数组有效元素中最大元素下标 */
 
 	for ( ; ; ) {
-		nready = poll(client, maxi+1, -1); 			/* 阻塞 */
+		nready = poll(client, maxi + 1, -1); 			/* 阻塞 */
 		if (client[0].revents & POLLRDNORM) { 		/* 有客户端链接请求 */
 			clilen = sizeof(cliaddr);
 			connfd = Accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);

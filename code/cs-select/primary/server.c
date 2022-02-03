@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
     while (1) {   
         rset = allset;                                          /* 每次循环时都从新设置select监控信号集 */
-        nready = select(maxfd+1, &rset, NULL, NULL, NULL);
+        nready = select(maxfd + 1, &rset, NULL, NULL, NULL);
         if (nready < 0)
             perr_exit("select error");
 
@@ -60,18 +60,16 @@ int main(int argc, char *argv[])
                 continue;
         } 
 
-        for (i = listenfd+1; i <= maxfd; i++) {                 /* 检测哪个clients 有数据就绪 */
+        for (i = listenfd + 1; i <= maxfd; i++) {                 /* 检测哪个clients 有数据就绪 */
 
             if (FD_ISSET(i, &rset)) {
-
                 if ((n = Read(i, buf, sizeof(buf))) == 0) {    /* 当client关闭链接时,服务器端也关闭对应链接 */
                     Close(i);
                     FD_CLR(i, &allset);                        /* 解除select对此文件描述符的监控 */
-
                 } else if (n > 0) {
-
-                    for (j = 0; j < n; j++)
+                    for (j = 0; j < n; j++) {
                         buf[j] = toupper(buf[j]);
+                    }
                     Write(i, buf, n);
                 }
             }

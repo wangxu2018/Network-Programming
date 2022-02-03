@@ -36,8 +36,7 @@ int g_efd;                                                  //全局变量, 保�
 struct myevent_s g_events[MAX_EVENTS+1];                    //自定义结构体类型数组. +1-->listen fd
 
 
-/*将结构体 myevent_s 成员变量 初始化*/
-
+/* myevent_s 成员变量 初始化*/
 void eventset(struct myevent_s *ev, int fd, void (*call_back)(int, int, void *), void *arg)
 {
     ev->fd = fd;
@@ -219,12 +218,16 @@ int main(int argc, char *argv[])
 {
     unsigned short port = SERV_PORT;
 
-    if (argc == 2)
-        port = atoi(argv[1]);                           //使用用户指定端口.如未指定,用默认端口
+    // 使用用户指定端口,如未指定 用默认端口
+    if (argc == 2) {
+        port = atoi(argv[1]);                           
+    }
 
-    g_efd = epoll_create(MAX_EVENTS+1);                 //创建红黑树,返回给全局 g_efd 
-    if (g_efd <= 0)
+    // 创建红黑树,返回给全局 g_efd
+    g_efd = epoll_create(MAX_EVENTS + 1);                  
+    if (g_efd <= 0) {
         printf("create efd in %s err %s\n", __func__, strerror(errno));
+    }
 
     initlistensocket(g_efd, port);                      //初始化监听socket
 
@@ -252,7 +255,7 @@ int main(int argc, char *argv[])
         }
 
         /*监听红黑树g_efd, 将满足的事件的文件描述符加至events数组中, 1秒没有事件满足, 返回 0*/
-        int nfd = epoll_wait(g_efd, events, MAX_EVENTS+1, 1000);
+        int nfd = epoll_wait(g_efd, events, MAX_EVENTS + 1, 1000);
         if (nfd < 0) {
             printf("epoll_wait error, exit\n");
             break;
