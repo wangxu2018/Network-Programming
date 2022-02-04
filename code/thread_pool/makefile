@@ -2,7 +2,7 @@ src = $(wildcard *.c)
 targets = $(patsubst %.c, %, $(src))
 
 CC = gcc
-CFLAGS = -lpthread -m32 -Wall -g
+CFLAGS = -lpthread -Wall -g
 
 all:$(targets)
 
