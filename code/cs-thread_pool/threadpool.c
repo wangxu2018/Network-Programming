@@ -20,7 +20,6 @@ typedef struct {
 } threadpool_task_t;                    /* 各子线程任务结构体 */
 
 /* 描述线程池相关信息 */
-
 struct threadpool_t {
     pthread_mutex_t lock;               /* 用于锁住本结构体 */    
     pthread_mutex_t thread_counter;     /* 记录忙状态线程个数de琐 -- busy_thr_num */
@@ -84,7 +83,7 @@ threadpool_t *threadpool_create(int min_thr_num, int max_thr_num, int queue_max_
         }
         memset(pool->threads, 0, sizeof(pthread_t)*max_thr_num);
 
-        /* 给 任务队列 开辟空间 */
+        // 给 任务队列 开辟空间
         pool->task_queue = (threadpool_task_t *)malloc(sizeof(threadpool_task_t)*queue_max_size);
         if (pool->task_queue == NULL) {
             printf("malloc task_queue fail");
@@ -356,8 +355,7 @@ int is_thread_alive(pthread_t tid)
     return true;
 }
 
-/*测试*/ 
-
+// 测试 
 #if 1
 
 /* 线程池中的线程，模拟处理业务 */
@@ -374,15 +372,15 @@ int main(void)
 {
     /*threadpool_t *threadpool_create(int min_thr_num, int max_thr_num, int queue_max_size);*/
 
-    threadpool_t *thp = threadpool_create(3,100,100);   /*创建线程池，池里最小3个线程，最大100，队列最大100*/
+    threadpool_t *thp = threadpool_create(3, 100, 100);   /*创建线程池，池里最小3个线程，最大100，队列最大100*/
     printf("pool inited");
 
     //int *num = (int *)malloc(sizeof(int)*20);
     int num[20], i;
     for (i = 0; i < 20; i++) {
         num[i] = i;
-        printf("add task %d\n",i);
-        
+        printf("add task %d\n", i);
+
         /*int threadpool_add(threadpool_t *pool, void*(*function)(void *arg), void *arg) */
 
         threadpool_add(thp, process, (void*)&num[i]);   /* 向线程池中添加任务 */
